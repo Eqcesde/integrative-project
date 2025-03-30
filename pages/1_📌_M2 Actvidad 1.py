@@ -104,12 +104,12 @@ st.dataframe(df_personas)
 st.write("## Datos desde CSV")
 st.dataframe(df_csv)
 
-st.title("Datos desde Excel")
+st.header("Datos desde Excel")
 df = cargar_datos()
 st.dataframe(df)
 
-st.title("Datos de Usuarios desde JSON")
+st.header("Datos de Usuarios desde JSON")
 st.dataframe(df)
 
-st.title("Datos desde URL")
+st.header("Datos desde URL")
 st.dataframe(df_url)
