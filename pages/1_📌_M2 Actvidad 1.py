@@ -1,5 +1,6 @@
 import pandas as pd
 import streamlit as st
+import sqlite3
 import csv 
 import json
 
@@ -83,6 +84,29 @@ with open("data.json", "w") as file:
 url = "https://www.datos.gov.co/resource/sbwg-7ju4.csv"
 
 
+conn = sqlite3.connect('estudiantes.db')
+cursor = conn.cursor()
+
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS estudiantes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT NOT NULL,
+        calificacion REAL NOT NULL
+    )
+''')
+
+cursor.execute("SELECT COUNT(*) FROM estudiantes")
+if cursor.fetchone()[0] == 0:
+    datos = [
+        ("Ana", 8.5),
+        ("Luis", 9.2),
+        ("Carlos", 7.8)
+    ]
+    cursor.executemany("INSERT INTO estudiantes (nombre, calificacion) VALUES (?, ?)", datos)
+    conn.commit()
+
+    
+
 df_url = pd.read_csv(url, sep=None, engine='python', encoding='latin1', on_bad_lines='skip')
 
 df = pd.read_json("data.json")
@@ -113,3 +137,6 @@ st.dataframe(df)
 
 st.header("Datos desde URL")
 st.dataframe(df_url)
+
+st.title("Datos desde SQLite")
+st.dataframe(df)

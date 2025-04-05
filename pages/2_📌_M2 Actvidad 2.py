@@ -1,5 +1,5 @@
 import streamlit as st
-
+import pandas as pd
 # Configuración de la página
 st.set_page_config(   
     page_icon="📌",
@@ -26,4 +26,13 @@ st.markdown("""
 """)
 
 st.header("Solución")
+
+df = pd.read_csv("C:/Users/Anderson/Desktop/25_ntp_pi/datasets/estudiantes_colombia.csv")
+
+st.header("Mostrar las primeras 5 filas")
+st.write(df.head(5))
+
+st.header("Mostrar las ultimas 5 filas")
+st.write(df.tail(5))
+
 
