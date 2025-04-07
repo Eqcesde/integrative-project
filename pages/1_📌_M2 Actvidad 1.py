@@ -1,8 +1,11 @@
 import pandas as pd
 import streamlit as st
 import sqlite3
-import csv 
 import json
+import numpy as np
+import firebase_admin
+
+from firebase_admin import credentials, firestore
 
 # Configuración de la página
 st.set_page_config(   
@@ -89,29 +92,53 @@ cursor = conn.cursor()
 
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS estudiantes (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT NOT NULL,
-        calificacion REAL NOT NULL
+        nombre TEXT,
+        calificacion REAL
     )
 ''')
-
 cursor.execute("SELECT COUNT(*) FROM estudiantes")
 if cursor.fetchone()[0] == 0:
     datos = [
-        ("Ana", 8.5),
-        ("Luis", 9.2),
-        ("Carlos", 7.8)
+        ("Ana Martínez", 8.9),
+        ("Carlos Pérez", 7.5),
+        ("Lucía Gómez", 9.3)
     ]
     cursor.executemany("INSERT INTO estudiantes (nombre, calificacion) VALUES (?, ?)", datos)
     conn.commit()
 
-    
+data = np.array([
+    [1, 'Ana', 85.5],
+    [2, 'Luis', 90.0],
+    [3, 'Carla', 78.3]
+])
+
+columnas = ['ID', 'Nombre', 'Puntaje']
+
+cred = credentials.Certificate("usuarios.json")  # Ruta a tu clave
+firebase_admin.initialize_app(cred)
+db = firestore.client()
+
+usuarios_ref = db.collection('usuarios')
+docs = usuarios_ref.stream()
+
+datos = []
+for doc in docs:
+    data = doc.to_dict()
+    datos.append(data)
+
+
+
+df_dataframe = pd.DataFrame(datos)
+
+df_np = pd.DataFrame(data, columns=columnas)
 
 df_url = pd.read_csv(url, sep=None, engine='python', encoding='latin1', on_bad_lines='skip')
 
-df = pd.read_json("data.json")
+df_json = pd.read_json("data.json")
 
 df_csv = pd.read_csv("data.csv")
+
+df_sql = pd.read_sql("SELECT * FROM estudiantes", conn)
 
 st.write("## DataFrame de Libros")
 st.dataframe(df_libros)
@@ -133,10 +160,16 @@ df = cargar_datos()
 st.dataframe(df)
 
 st.header("Datos de Usuarios desde JSON")
-st.dataframe(df)
+st.dataframe(df_json)
 
 st.header("Datos desde URL")
 st.dataframe(df_url)
 
 st.title("Datos desde SQLite")
-st.dataframe(df)
+st.dataframe(df_sql)
+
+st.title("Datos desde NumPy")
+st.dataframe(df_np)
+
+st.title("Datos desde Firebase")
+st.dataframe(df_dataframe)
