@@ -114,22 +114,6 @@ data = np.array([
 
 columnas = ['ID', 'Nombre', 'Puntaje']
 
-# cred = credentials.Certificate("usuarios.json")  # Ruta a tu clave
-# firebase_admin.initialize_app(cred)
-# db = firestore.client()
-
-# usuarios_ref = db.collection('usuarios')
-# docs = usuarios_ref.stream()
-
-# datos = []
-# for doc in docs:
-#     data = doc.to_dict()
-#     datos.append(data)
-
-
-
-# df_dataframe = pd.DataFrame(datos)
-
 df_np = pd.DataFrame(data, columns=columnas)
 
 df_url = pd.read_csv(url, sep=None, engine='python', encoding='latin1', on_bad_lines='skip')
