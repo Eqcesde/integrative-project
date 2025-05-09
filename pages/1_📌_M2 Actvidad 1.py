@@ -139,19 +139,19 @@ st.dataframe(df_personas)
 st.write("## Datos desde CSV")
 st.dataframe(df_csv)
 
-st.write("Datos desde Excel")
+st.header("Datos desde Excel")
 df = cargar_datos()
 st.dataframe(df)
 
-st.write("Datos de Usuarios desde JSON")
+st.header("Datos de Usuarios desde JSON")
 st.dataframe(df_json)
 
-st.write("Datos desde URL")
+st.header("Datos desde URL")
 st.dataframe(df_url)
 
-st.write("Datos desde SQLite")
+st.header("Datos desde SQLite")
 st.dataframe(df_sql)
 
-st.write("Datos desde NumPy")
+st.header("Datos desde NumPy")
 st.dataframe(df_np)
 
