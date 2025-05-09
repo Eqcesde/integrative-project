@@ -114,21 +114,21 @@ data = np.array([
 
 columnas = ['ID', 'Nombre', 'Puntaje']
 
-cred = credentials.Certificate("usuarios.json")  # Ruta a tu clave
-firebase_admin.initialize_app(cred)
-db = firestore.client()
+# cred = credentials.Certificate("usuarios.json")  # Ruta a tu clave
+# firebase_admin.initialize_app(cred)
+# db = firestore.client()
 
-usuarios_ref = db.collection('usuarios')
-docs = usuarios_ref.stream()
+# usuarios_ref = db.collection('usuarios')
+# docs = usuarios_ref.stream()
 
-datos = []
-for doc in docs:
-    data = doc.to_dict()
-    datos.append(data)
+# datos = []
+# for doc in docs:
+#     data = doc.to_dict()
+#     datos.append(data)
 
 
 
-df_dataframe = pd.DataFrame(datos)
+# df_dataframe = pd.DataFrame(datos)
 
 df_np = pd.DataFrame(data, columns=columnas)
 
@@ -171,5 +171,3 @@ st.dataframe(df_sql)
 st.title("Datos desde NumPy")
 st.dataframe(df_np)
 
-st.title("Datos desde Firebase")
-st.dataframe(df_dataframe)
